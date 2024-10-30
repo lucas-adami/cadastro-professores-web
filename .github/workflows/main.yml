@@ -28,7 +28,7 @@ jobs:
         run: npm install
 
       - name: Instalar semver
-        run: npm install -g semver jq
+        run: npm install -g semver
 
       - name: Criar nova tag caso não exista
         id: create_initial_tag
@@ -94,7 +94,7 @@ jobs:
 
       - name: Atualizar versão no package.json
         run: |
-          CURRENT_PACKAGE_VERSION=$(jq -r '.version' package.json)
+          CURRENT_PACKAGE_VERSION=$(node -p "require('./package.json').version")
           if [ "$CURRENT_PACKAGE_VERSION" != "${{ env.NEW_VERSION }}" ]; then
             npm version ${{ env.NEW_VERSION }} --no-git-tag-version
           else
