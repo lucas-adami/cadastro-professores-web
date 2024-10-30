@@ -71,9 +71,9 @@ jobs:
           for COMMIT in "$COMMITS"; do
             if [[ "$COMMIT" == *"BREAKING CHANGE"* ]]; then
               MAJOR=1
-            elif [[ "$COMMIT" == *"feat"* ]]; then
+            elif [[ "$COMMIT" == *"Feat"* ]]; then
               MINOR=1
-            elif [[ "$COMMIT" == *"fix"* ]]; then
+            elif [[ "$COMMIT" == *"Fix"* ]]; then
               PATCH=1
             fi
           done
@@ -94,12 +94,7 @@ jobs:
 
       - name: Atualizar versão no package.json
         run: |
-          CURRENT_PACKAGE_VERSION=$(node -p "require('./package.json').version")
-          if [ "$CURRENT_PACKAGE_VERSION" != "${{ env.NEW_VERSION }}" ]; then
-            npm version ${{ env.NEW_VERSION }} --no-git-tag-version
-          else
-            echo "A versão no package.json já está atualizada para $CURRENT_PACKAGE_VERSION"
-          fi
+          npm version ${{ env.NEW_VERSION }} --no-git-tag-version
           
       - name: Commit e push
         env:
