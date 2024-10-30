@@ -35,8 +35,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git fetch --tags  # Garante que as tags remotas sejam trazidas
-          if [ -z "$(git tag -l)" ]; then  # Verifica se não existem tags
+          git fetch --tags
+          if [ -z "$(git tag -l)" ]; then
             git config --global user.name 'github-actions'
             git config --global user.email 'github-actions@github.com'
             git tag -a v0.0.0 -m "Initial release"
@@ -104,5 +104,11 @@ jobs:
           git config --global user.email 'github-actions@github.com'
           git add package.json
           git commit -m "chore(release): version ${{ env.NEW_VERSION }}"
-          git tag v${{ env.NEW_VERSION }}
-          git push origin master --tags
+          
+          # Verificar se a tag já existe antes de tentar criá-la
+          if git rev-parse "v${{ env.NEW_VERSION }}" >/dev/null 2>&1; then
+            echo "A tag v${{ env.NEW_VERSION }} já existe. Não será recriada."
+          else
+            git tag v${{ env.NEW_VERSION }}
+            git push origin master --tags
+          fi
