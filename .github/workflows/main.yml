@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - master
-      
+
 jobs:
   version:
     runs-on: ubuntu-latest
@@ -90,12 +90,12 @@ jobs:
           fi
           
           echo "Nova versão: $NEW_VERSION"
-          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          echo "::set-output name=NEW_VERSION::$NEW_VERSION"
 
       - name: Atualizar versão no package.json
         run: |
-          npm version ${{ env.NEW_VERSION }} --no-git-tag-version
-          
+          npm version ${{ steps.version.outputs.NEW_VERSION }} --no-git-tag-version
+
       - name: Commit e push
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -103,12 +103,12 @@ jobs:
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add package.json
-          git commit -m "chore(release): version ${{ env.NEW_VERSION }}"
+          git commit -m "chore(release): version ${{ steps.version.outputs.NEW_VERSION }}"
           
           # Verificar se a tag já existe antes de tentar criá-la
-          if git rev-parse "v${{ env.NEW_VERSION }}" >/dev/null 2>&1; then
-            echo "A tag v${{ env.NEW_VERSION }} já existe. Não será recriada."
+          if git rev-parse "v${{ steps.version.outputs.NEW_VERSION }}" >/dev/null 2>&1; then
+            echo "A tag v${{ steps.version.outputs.NEW_VERSION }} já existe. Não será recriada."
           else
-            git tag v${{ env.NEW_VERSION }}
+            git tag v${{ steps.version.outputs.NEW_VERSION }}
             git push origin master --tags
           fi
