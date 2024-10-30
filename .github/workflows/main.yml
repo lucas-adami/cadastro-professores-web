@@ -71,9 +71,9 @@ jobs:
           for COMMIT in "$COMMITS"; do
             if [[ "$COMMIT" == *"BREAKING CHANGE"* ]]; then
               MAJOR=1
-            elif [[ "$COMMIT" == *"feat"* ]]; then
+            elif [[ "$COMMIT" == *"Feat"* ]]; then
               MINOR=1
-            elif [[ "$COMMIT" == *"fix"* ]]; then
+            elif [[ "$COMMIT" == *"Fix"* ]]; then
               PATCH=1
             fi
           done
