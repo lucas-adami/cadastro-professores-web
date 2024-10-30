@@ -71,7 +71,7 @@ export default function Login() {
         </Box>
         <p>
           Ainda não possui cadastro,{" "}
-          <Link href="/register">cadastre-se aqui!</Link>
+          <Link href="/register">cadastre-se aqui</Link>
         </p>
       </Box>
     </Container>
