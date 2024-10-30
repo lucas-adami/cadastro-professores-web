@@ -28,7 +28,7 @@ jobs:
         run: npm install
 
       - name: Instalar semver
-        run: npm install -g semver
+        run: npm install -g semver jq
 
       - name: Criar nova tag caso não exista
         id: create_initial_tag
@@ -71,9 +71,9 @@ jobs:
           for COMMIT in "$COMMITS"; do
             if [[ "$COMMIT" == *"BREAKING CHANGE"* ]]; then
               MAJOR=1
-            elif [[ "$COMMIT" == *"Feat"* ]]; then
+            elif [[ "$COMMIT" == *"feat"* ]]; then
               MINOR=1
-            elif [[ "$COMMIT" == *"Fix"* ]]; then
+            elif [[ "$COMMIT" == *"fix"* ]]; then
               PATCH=1
             fi
           done
@@ -94,7 +94,12 @@ jobs:
 
       - name: Atualizar versão no package.json
         run: |
-          npm version ${{ env.NEW_VERSION }} --no-git-tag-version
+          CURRENT_PACKAGE_VERSION=$(jq -r '.version' package.json)
+          if [ "$CURRENT_PACKAGE_VERSION" != "${{ env.NEW_VERSION }}" ]; then
+            npm version ${{ env.NEW_VERSION }} --no-git-tag-version
+          else
+            echo "A versão no package.json já está atualizada para $CURRENT_PACKAGE_VERSION"
+          fi
           
       - name: Commit e push
         env:
