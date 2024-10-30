@@ -35,8 +35,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git fetch --tags  # Adicione esta linha para garantir que as tags remotas sejam trazidas
-          if [ -z "$(git tag -l)" ]; then  # Use 'git tag -l' para listar as tags locais e remotas
+          git fetch --tags  # Garante que as tags remotas sejam trazidas
+          if [ -z "$(git tag -l)" ]; then  # Verifica se não existem tags
             git config --global user.name 'github-actions'
             git config --global user.email 'github-actions@github.com'
             git tag -a v0.0.0 -m "Initial release"
@@ -90,11 +90,11 @@ jobs:
           fi
           
           echo "Nova versão: $NEW_VERSION"
-          echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
 
       - name: Atualizar versão no package.json
         run: |
-          npm version ${{ env.new_version }} --no-git-tag-version
+          npm version ${{ env.NEW_VERSION }} --no-git-tag-version
           
       - name: Commit e push
         env:
@@ -103,6 +103,6 @@ jobs:
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add package.json
-          git commit -m "chore(release): version ${{ env.new_version }}"
-          git tag v${{ env.new_version }}
+          git commit -m "chore(release): version ${{ env.NEW_VERSION }}"
+          git tag v${{ env.NEW_VERSION }}
           git push origin master --tags
