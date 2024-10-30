@@ -35,7 +35,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          if [ -z "$(git tag)" ]; then
+          git fetch --tags  # Adicione esta linha para garantir que as tags remotas sejam trazidas
+          if [ -z "$(git tag -l)" ]; then  # Use 'git tag -l' para listar as tags locais e remotas
             git config --global user.name 'github-actions'
             git config --global user.email 'github-actions@github.com'
             git tag -a v0.0.0 -m "Initial release"
