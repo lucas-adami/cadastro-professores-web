@@ -1,51 +1,84 @@
 import {
   Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
+  CardContent,
+  CardActions,
   Divider,
-  Image,
   Button,
   Link,
-} from "@nextui-org/react";
+  Typography,
+} from "@mui/material";
+import Image from "next/image";
 
 export default function App() {
   return (
-    <Card className="max-w-[600px] mx-auto p-4 shadow-lg rounded-lg">
-      <CardHeader className="flex flex-col items-center text-center gap-4">
+    <Card
+      sx={{
+        maxWidth: 600,
+        mx: "auto",
+        p: 4,
+        boxShadow: 3,
+        borderRadius: 2,
+      }}
+    >
+      <CardContent
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          textAlign: "center",
+          gap: 2,
+        }}
+      >
         <Image
           alt="Logo Fatec Votorantim"
-          radius="sm"
           src="/assets/logoFatecCapi.png"
           width={300}
-          className="mb-2"
+          height={100}
+          style={{ marginBottom: "1rem" }}
         />
-        <h1 className="text-3xl font-bold text-gray-800">Bem-vindo!</h1>
-      </CardHeader>
+        <Typography
+          variant="h4"
+          component="h1"
+          color="text.primary"
+          fontWeight="bold"
+        >
+          Bem-vindo!
+        </Typography>
+      </CardContent>
       <Divider />
-      <CardBody className="flex flex-col items-center gap-4 text-center">
-        <p className="text-lg text-gray-600">Já possui uma conta?</p>
+      <CardContent
+        sx={{
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 2,
+        }}
+      >
+        <Typography variant="body1" color="text.secondary">
+          Já possui uma conta?
+        </Typography>
         <Button
-          as="a"
-          href="/login"
+          variant="contained"
           color="primary"
-          size="lg"
-          className="w-full max-w-xs"
+          size="large"
+          href="/login"
+          sx={{ width: "100%", maxWidth: 300 }}
         >
           Entrar
         </Button>
-      </CardBody>
+      </CardContent>
       <Divider />
-      <CardFooter className="flex flex-col items-center gap-2 text-center">
-        <p className="text-lg text-gray-600">Ainda não possui uma conta?</p>
-        <Link
-          href="/register"
-          color="primary"
-          className="text-blue-500 hover:underline"
-        >
+      <CardActions
+        sx={{ textAlign: "center", flexDirection: "column", gap: 1 }}
+      >
+        <Typography variant="body1" color="text.secondary">
+          Ainda não possui uma conta?
+        </Typography>
+        <Link href="/register" color="primary" underline="hover">
           Cadastre-se aqui!
         </Link>
-      </CardFooter>
+      </CardActions>
     </Card>
   );
 }

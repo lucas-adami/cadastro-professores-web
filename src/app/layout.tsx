@@ -1,12 +1,19 @@
-// app/layout.tsx
-import type { Metadata } from "next";
-import { NextUIProvider } from "@nextui-org/react"; // Importa o NextUIProvider
+"use client";
+
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "Cadastro de Professores",
-  description: "App criado com Next.js, NextUI e Atomic Design",
-};
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#949494",
+    },
+    secondary: {
+      main: "#eeeeee",
+    },
+  },
+});
 
 export default function RootLayout({
   children,
@@ -16,7 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <NextUIProvider>{children}</NextUIProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
