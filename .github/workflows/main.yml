@@ -92,9 +92,15 @@ jobs:
           echo "Nova versão: $NEW_VERSION"
           echo "::set-output name=NEW_VERSION::$NEW_VERSION"
 
-      - name: Atualizar versão no package.json
+      - name: Atualizar versão no package.json (se necessário)
         run: |
-          npm version ${{ steps.version.outputs.NEW_VERSION }} --no-git-tag-version
+          CURRENT_VERSION=$(jq -r '.version' package.json)
+          if [ "$CURRENT_VERSION" != "${{ steps.version.outputs.NEW_VERSION }}" ]; then
+            npm version ${{ steps.version.outputs.NEW_VERSION }} --no-git-tag-version
+          else
+            echo "A versão no package.json já está atualizada."
+          fi
+        shell: bash
 
       - name: Commit e push
         env:
