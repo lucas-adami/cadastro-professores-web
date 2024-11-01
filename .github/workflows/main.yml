@@ -102,7 +102,7 @@ jobs:
           fi
         shell: bash
 
-            - name: Commit e push (se necessário)
+      - name: Commit e push (se necessário)
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
